@@ -28,9 +28,7 @@
         <img slot="icon" src="../assets/app.png">
       </grid-item>
     </grid>
-    <group :title="('Switch the type')">
-      <radio title="type" v-model="type" :options="['1', '2', '3', '4', '5']"></radio>
-    </group>
+
     <panel :header="('List of content with image')" :footer="footer" :list="list" :type="type" @on-img-error="onImgError"></panel>
     <tabbar>
       <tabbar-item>
@@ -100,6 +98,50 @@ export default {
       demo06_list: urlList,
       demo06_index: 0
     }
-  }
+  },
+  data () {
+    return {
+      type: '1',
+      list: [{
+        src: 'http://somedomain.somdomain/x.jpg',
+        fallbackSrc: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
+        title: '标题一',
+        desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。',
+        url: '/component/cell'
+      }, {
+        src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
+        title: '标题二',
+        desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。',
+        url: {
+          path: '/component/radio',
+          replace: false
+        },
+        meta: {
+          source: '来源信息',
+          date: '时间',
+          other: '其他信息'
+        }
+      }],
+      footer: {
+        title: this.$t('more'),
+        url: 'http://vux.li'
+      }
+    }
+  },
+  created () {
+    let _this = this
+    this.$http.post('https://api.apiopen.top/getJoke').then(({data}) => {
+      console.log(data)
+      var new_data = data.result.map((item, index) => ({
+        src: item.header,
+        fallbackSrc: item.header,
+        title: item.name,
+        desc: item.text
+      }))
+      console.log(new_data)
+      _this.list = new_data
+    })
+  },
+
 }
 </script>
