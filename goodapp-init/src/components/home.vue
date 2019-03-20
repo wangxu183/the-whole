@@ -99,6 +99,19 @@ export default {
       demo06_index: 0
     }
   },
+  created () {
+    let _this = this
+    this.$http.post('http://localhost:3000/api/api').then(({data}) => {
+      console.log(data)
+      var new_data = data.result.map((item, index) => ({
+        src: item.src,
+        title: item.title,
+        desc: item.content
+      }))
+      console.log(new_data)
+      _this.list = new_data
+    })
+  },
   data () {
     return {
       type: '1',
@@ -127,21 +140,6 @@ export default {
         url: 'http://vux.li'
       }
     }
-  },
-  created () {
-    let _this = this
-    this.$http.post('https://api.apiopen.top/getJoke').then(({data}) => {
-      console.log(data)
-      var new_data = data.result.map((item, index) => ({
-        src: item.header,
-        fallbackSrc: item.header,
-        title: item.name,
-        desc: item.text
-      }))
-      console.log(new_data)
-      _this.list = new_data
-    })
-  },
-
+  }
 }
 </script>
